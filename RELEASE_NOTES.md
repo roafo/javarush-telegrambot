@@ -7,3 +7,7 @@
 ##0.2.0-SNAPSHOT
 *   implement command pattern
 *   add tests
+
+## 0.3.0-SNAPSHOT
+
+*   JRTB-4: added deployment process to the project
