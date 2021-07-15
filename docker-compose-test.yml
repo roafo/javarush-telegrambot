@@ -6,9 +6,9 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DATABASE: "dev_jrtb_db"
+      POSTGRES_DB: "jrtb"
       POSTGRES_PASSWORD: postgres
-     # POSTGRES_USER: postgres
+      POSTGRES_USER: postgres
   adminer:
     image: adminer
     restart: always
