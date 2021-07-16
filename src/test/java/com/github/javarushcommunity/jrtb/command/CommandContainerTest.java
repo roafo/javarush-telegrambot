@@ -1,6 +1,7 @@
 package com.github.javarushcommunity.jrtb.command;
 
 import com.github.javarushcommunity.jrtb.service.SendBotMessageService;
+import com.github.javarushcommunity.jrtb.service.TelegramUserService;
 import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
@@ -22,7 +23,8 @@ class CommandContainerTest {
     @BeforeEach
     public void init() {
         SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageService.class);
-        commandContainer = new CommandContainer(sendBotMessageService);
+        TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
+        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService);
     }
 
 

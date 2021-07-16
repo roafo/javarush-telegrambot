@@ -4,11 +4,14 @@ version: '3.1'
 services:
   db:
     image: postgres
-    restart: always
+    ports:
+      - 5434:5432
     environment:
       POSTGRES_DB: "jrtb"
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+
   adminer:
     image: adminer
     restart: always

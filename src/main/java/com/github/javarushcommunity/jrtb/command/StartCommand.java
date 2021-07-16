@@ -1,25 +1,49 @@
 package com.github.javarushcommunity.jrtb.command;
 
+import com.github.javarushcommunity.jrtb.domain.TelegramUser;
 import com.github.javarushcommunity.jrtb.service.SendBotMessageService;
+import com.github.javarushcommunity.jrtb.service.TelegramUserService;
+import org.springframework.util.StringUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.Optional;
 
 public class StartCommand implements Command {
 
     private SendBotMessageService sendBotMessageService;
+    private TelegramUserService telegramUserService;
 
-    public StartCommand(SendBotMessageService sendBotMessageService) {
+    public StartCommand(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService) {
         this.sendBotMessageService = sendBotMessageService;
+        this.telegramUserService = telegramUserService;
     }
 
-    public final static String START_MESSAGE = "Привет!\n" +
-            "Я - Javarush Telegram Bot. Я помогу тебе быть в курсе последних " +
+    public static String START_MESSAGE = "Привет, %s!\n" +
+            "Меня зовут Jarvis, и я помогу тебе быть в курсе последних " +
             "статей тех авторов, котрые тебе интересны.\n" +
-            "Пока я маленький и только учусь.";
+            "Давай начнём?\n" +
+            "Введи /help, чтобы узнать, что я могу";
 
 
     @Override
     public void execute(Update update) {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), START_MESSAGE);
+        String chatId = update.getMessage().getChatId().toString();
+
+        String userName = !StringUtils.isEmpty(update.getMessage().getFrom().getUserName()) ?
+                update.getMessage().getFrom().getUserName() : update.getMessage().getFrom().getFirstName();
+
+        Optional<TelegramUser> tgUser = telegramUserService.findByChatId(chatId);
+        TelegramUser telegramUser;
+        if (tgUser.isPresent()) {
+            telegramUser= tgUser.get();
+        } else {
+            telegramUser = new TelegramUser();
+            telegramUser.setChatId(chatId);
+        }
+        telegramUser.setActive(true);
+        telegramUserService.save(telegramUser);
+
+        sendBotMessageService.sendMessage(chatId, String.format(START_MESSAGE, userName));
     }
 
     @Override
