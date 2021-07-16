@@ -27,4 +27,11 @@ public interface TelegramUserService {
      * @return {@link TelegramUser} with provided chat ID or null otherwise.
      */
     Optional<TelegramUser> findByChatId(String chatId);
+
+    /**
+     * Get count of the active {@link TelegramUser}
+     *
+     * @return qty of the active {@link TelegramUser} objects.
+     */
+    long countAllByActiveTrue();
 }

@@ -18,6 +18,7 @@
         <telegrambot.starter.version>5.0.1</telegrambot.starter.version>
         <telegrambot.version>3.5</telegrambot.version>
         <postgresql.version>42.2.23</postgresql.version>
+        <unirest.version>3.11.01</unirest.version>
     </properties>
     <dependencies>
         <dependency>
@@ -71,6 +72,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>${unirest.version}</version>
         </dependency>
 
     </dependencies>
