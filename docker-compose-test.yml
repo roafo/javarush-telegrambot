@@ -1,17 +1,7 @@
+# Use postgres/example user/password credentials
 version: '3.1'
 
 services:
-  jrtb-bot:
-    depends_on:
-      - db
-    build:
-      context: .
-    environment:
-      BOT_NAME: ${BOT_NAME}
-      BOT_TOKEN: ${BOT_TOKEN}
-      BOT_DB_USERNAME: ${BOT_DB_USERNAME}
-      BOT_DB_PASSWORD: ${BOT_DB_PASSWORD}
-    restart: always
   db:
     image: postgres
     ports:

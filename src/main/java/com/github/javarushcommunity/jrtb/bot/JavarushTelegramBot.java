@@ -2,7 +2,9 @@ package com.github.javarushcommunity.jrtb.bot;
 
 import com.github.javarushcommunity.jrtb.command.CommandContainer;
 import com.github.javarushcommunity.jrtb.service.SendBotMessageServiceImpl;
+import com.github.javarushcommunity.jrtb.service.TelegramUserService;
 import org.apache.commons.codec.binary.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -12,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import static com.github.javarushcommunity.jrtb.command.CommandName.NO;
+import static com.github.javarushcommunity.jrtb.command.CommandName.START;
 
 @Component
 public class JavarushTelegramBot extends TelegramLongPollingBot {
@@ -26,8 +29,9 @@ public class JavarushTelegramBot extends TelegramLongPollingBot {
 
     private final CommandContainer commandContainer;
 
-    public JavarushTelegramBot() {
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
+    @Autowired
+    public JavarushTelegramBot(TelegramUserService telegramUserService) {
+        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this), telegramUserService);
     }
 
     /**
@@ -53,6 +57,8 @@ public class JavarushTelegramBot extends TelegramLongPollingBot {
                 String commandIdentifier = message.split(" ")[0].toLowerCase();
 
                 commandContainer.retrieveCommand(commandIdentifier).execute(update);
+            } else if(message.toLowerCase().contains("привет") || (message.toLowerCase().contains("ты кто")) || message.contains("?")) {
+                commandContainer.retrieveCommand(START.getCommandName()).execute(update);
             } else {
                 commandContainer.retrieveCommand(NO.getCommandName()).execute(update);
             }
