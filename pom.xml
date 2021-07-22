@@ -19,6 +19,7 @@
         <telegrambot.version>3.5</telegrambot.version>
         <postgresql.version>42.2.23</postgresql.version>
         <unirest.version>3.11.01</unirest.version>
+        <apache.commons.version>3.11</apache.commons.version>
     </properties>
     <dependencies>
         <dependency>
@@ -80,6 +81,11 @@
             <version>${unirest.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${apache.commons.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
