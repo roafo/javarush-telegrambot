@@ -56,7 +56,7 @@ public class JavarushTelegramBot extends TelegramLongPollingBot {
             String message = update.getMessage().getText().trim();
             String chatId = update.getMessage().getChatId().toString();
             if (message.startsWith(COMMAND_PREFIX)) {
-                String commandIdentifier = message.split(" ")[0].toLowerCase();
+                String commandIdentifier = message.split(" ")[0];
 
                 commandContainer.retrieveCommand(commandIdentifier).execute(update);
             } else if(message.toLowerCase().contains("привет") || (message.toLowerCase().contains("ты кто")) || message.contains("?")) {

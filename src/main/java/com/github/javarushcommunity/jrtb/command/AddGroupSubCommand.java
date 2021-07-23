@@ -11,6 +11,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.stream.Collectors;
 
 import static com.github.javarushcommunity.jrtb.command.CommandName.ADD_GROUP_SUB;
+import static com.github.javarushcommunity.jrtb.command.CommandName.ADD_GROUP_SUB_RUS;
+import static com.github.javarushcommunity.jrtb.command.CommandUtils.getChatId;
+import static com.github.javarushcommunity.jrtb.command.CommandUtils.getMessage;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
@@ -33,12 +36,13 @@ public class AddGroupSubCommand implements Command {
 
    @Override
    public void execute(Update update) {
+       String messageText = getMessage(update);
 
-       if (getMessage(update).equalsIgnoreCase(ADD_GROUP_SUB.getCommandName())) {
+       if (messageText.equalsIgnoreCase(ADD_GROUP_SUB.getCommandName()) || messageText.equalsIgnoreCase(ADD_GROUP_SUB_RUS.getCommandName())) {
            sendGroupIdList(getChatId(update));
            return;
        }
-       String groupId = getMessage(update).split(SPACE)[1];
+       String groupId = messageText.split(SPACE)[1];
        String chatId = getChatId(update);
        if (isNumeric(groupId)) {
            GroupDiscussionInfo groupById = javaRushGroupClient.getGroupById(Integer.parseInt(groupId));
@@ -62,21 +66,13 @@ public class AddGroupSubCommand implements Command {
                .map(group -> String.format("%s - %s \n", group.getTitle(), group.getId()))
                .collect(Collectors.joining());
 
-       String message = "Чтобы подписаться на группу - передай комадну вместе с ID группы. \n" +
+       String message = "Чтобы подписаться на группу, передай команду вместе с ID группы. \n" +
                "Например: /addGroupSub 16. \n\n" +
-               "я подготовил список всех групп - выберай какую хочешь :) \n\n" +
+               "я подготовил список всех групп - выбирай, какую хочешь :) \n\n" +
                "имя группы - ID группы \n\n" +
                "%s";
 
        sendBotMessageService.sendMessage(chatId, String.format(message, groupIds));
-   }
-
-   String getChatId(Update update) {
-       return String.valueOf(update.getMessage().getChatId());
-   }
-
-   String getMessage(Update update) {
-       return update.getMessage().getText();
    }
 
     @Override
