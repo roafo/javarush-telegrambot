@@ -8,9 +8,9 @@ import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 
 @DisplayName("Unit-level testing for CommandContainer")
@@ -28,7 +28,9 @@ class CommandContainerTest {
         TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
         JavaRushGroupClient groupClient = Mockito.mock(JavaRushGroupClient.class);
         GroupSubService groupSubService = Mockito.mock(GroupSubService.class);
-        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, groupClient, groupSubService);
+        List<String> admins = new ArrayList<>();
+        admins.add("roafo");
+        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, groupClient, groupSubService, admins);
     }
 
 

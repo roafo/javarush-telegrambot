@@ -5,15 +5,15 @@ import com.github.javarushcommunity.jrtb.javarushclient.service.GroupSubService;
 import com.github.javarushcommunity.jrtb.javarushclient.service.JavaRushGroupClient;
 import com.github.javarushcommunity.jrtb.service.SendBotMessageServiceImpl;
 import com.github.javarushcommunity.jrtb.service.TelegramUserService;
-import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.List;
 
 import static com.github.javarushcommunity.jrtb.command.CommandName.NO;
 import static com.github.javarushcommunity.jrtb.command.CommandName.START;
@@ -32,8 +32,16 @@ public class JavarushTelegramBot extends TelegramLongPollingBot {
     private final CommandContainer commandContainer;
 
     @Autowired
-    public JavarushTelegramBot(TelegramUserService telegramUserService, JavaRushGroupClient groupClient, GroupSubService groupSubService) {
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this), telegramUserService, groupClient, groupSubService);
+    public JavarushTelegramBot(TelegramUserService telegramUserService,
+                               JavaRushGroupClient groupClient,
+                               GroupSubService groupSubService,
+                               @Value("#{'${bot.admins}'.split(',')}") List<String> admins) {
+        this.commandContainer = new CommandContainer(
+                new SendBotMessageServiceImpl(this),
+                telegramUserService,
+                groupClient,
+                groupSubService,
+                admins);
     }
 
     /**

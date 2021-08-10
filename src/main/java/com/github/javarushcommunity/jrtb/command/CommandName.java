@@ -9,7 +9,8 @@ public enum CommandName {
     STAT("/stat"),
     ADD_GROUP_SUB("/addGroupSub"),
     ADD_GROUP_SUB_RUS("/подписаться"),
-    LIST_GROUP_SUB("/listGroupSub");
+    LIST_GROUP_SUB("/listGroupSub"),
+    ADMIN_HELP("/ahelp")
     ;
 
     private final String commandName;
